@@ -1,11 +1,39 @@
 "use client";
 
-import DialogArchive from "@/components/DialogArchive";
+import { createContact } from "@/actions/contact";
 import IconsGrid from "@/components/IconsGrid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import toast, { type ToastOptions } from "react-hot-toast";
+
+function getToastOptions(status: string | "success" | "error"): ToastOptions {
+  return {
+    duration: 4000,
+    position: "bottom-center",
+    className:
+      status === "error"
+        ? "!bg-red-600 !text-white"
+        : "!bg-indigo-600 !text-white",
+  };
+}
+
+const initialState = {
+  email: null,
+};
 
 export default function App() {
-  const [open, setOpen] = useState(false);
+  const [state, formAction] = useFormState(createContact, initialState);
+  const { pending } = useFormStatus();
+  const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    if (state?.message && state?.status) {
+      toast(state?.message, getToastOptions(state.status));
+      if (state.status === "success") {
+        setEmail("");
+      }
+    }
+  }, [state]);
 
   return (
     <>
@@ -42,21 +70,19 @@ export default function App() {
         <div className="mx-auto max-w-7xl px-6 py-12 lg:flex lg:items-center lg:gap-x-10 lg:px-8 min-h-screen">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
             {/* <div className="flex">
-            <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              <span className="font-semibold text-indigo-600">
-                We’re hiring
-              </span>
-              <span className="h-4 w-px bg-gray-900/10" aria-hidden="true" />
-              <a href="#" className="flex items-center gap-x-1">
-                <span className="absolute inset-0" aria-hidden="true" />
-                See open positions
-                <ChevronRightIcon
-                  className="-mr-2 h-5 w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-              </a>
-            </div>
-          </div> */}
+              <div className="relative flex items-center gap-x-4 rounded-full px-4 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                <span className="font-semibold text-indigo-600">Discord</span>
+                <span className="h-4 w-px bg-gray-900/10" aria-hidden="true" />
+                <a href="#" className="flex items-center gap-x-1">
+                  <span className="absolute inset-0" aria-hidden="true" />
+                  Rejoins nous
+                  <ChevronRightIcon
+                    className="-mr-2 h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </a>
+              </div>
+            </div> */}
             <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               <span className="sr-only">The Hoop</span>
               <svg
@@ -83,23 +109,49 @@ export default function App() {
             <p className="max-w-xl mt-6 text-lg leading-7 text-gray-600">
               Recevez les dernières informations NBA, les matchs, les
               transferts, les blessures, les performances et bien plus encore.
-              C'est facile, gratuit et livré chaque matin directement sur{" "}
-              <span className="underline underline-offset-4">WhatsApp</span>.
+              C'est facile, gratuit et livré chaque matin dans votre bôite mail.
+              {/* <span className="underline underline-offset-4">WhatsApp</span>. */}
             </p>
-            <div className="mt-10 flex items-center gap-x-6">
-              <a
+            <div className="mt-10 sm:flex items-center gap-x-6">
+              {/* <a
                 href="#"
                 className="rounded-full bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 S'inscrire
-              </a>
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="text-sm font-semibold leading-6 text-gray-900"
+              </a> */}
+              <form action={formAction} className="max-w-sm sm:flex-[0_0_55%]">
+                <fieldset disabled={pending}>
+                  <div className="flex gap-x-2">
+                    <label htmlFor="email" className="sr-only">
+                      Email address
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      className="min-w-0 flex-auto rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      placeholder="E-mail"
+                      onChange={(e) => setEmail(e.target.value)}
+                      value={email}
+                    />
+                    <button
+                      type="submit"
+                      className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      S'inscrire
+                    </button>
+                  </div>
+                </fieldset>
+              </form>
+              <a
+                href="https://discord.gg/GmdNGUtjGv"
+                target="_blank"
+                className="text-sm font-semibold leading-6 text-gray-900 mt-4 sm:mt-0 hover:text-indigo-500 focus-visible:outline-indigo-600"
               >
-                Archive <span aria-hidden="true">→</span>
-              </button>
+                Discord <span aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
           <div className="relative mt-16 sm:mt-24 lg:mt-4 lg:flex-shrink-0 lg:flex-grow">
@@ -107,7 +159,6 @@ export default function App() {
           </div>
         </div>
       </div>
-      <DialogArchive open={open} setOpen={(value: boolean) => setOpen(value)} />
     </>
   );
 }

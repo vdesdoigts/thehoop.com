@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -24,7 +25,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className={`bg-slate-900 ${inter.className}`}>{children}</body>
+      <body className={`bg-slate-900 ${inter.className}`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

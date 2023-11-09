@@ -5,13 +5,6 @@ const contactNotFoundCode = "document_not_found";
 
 const brevoContactApi = "https://api.brevo.com/v3/contacts";
 
-// const defaultClient = Brevo.ApiClient.instance;
-// const apiKey = defaultClient.authentications["api-key"];
-// apiKey.apiKey = process.env.BREVO_API_KEY;
-
-// const apiInstance = new Brevo.TransactionalEmailsApi();
-// const createBrevoContact = new Brevo.CreateContact();
-
 export async function createContact(prevState: any, formData: FormData) {
   const schema = z.object({
     email: z.string().min(1),
@@ -41,6 +34,7 @@ export async function createContact(prevState: any, formData: FormData) {
         },
         body: JSON.stringify({
           email: data.email,
+          listIds: [process.env.BREVO_DAILY_NEWSLETTER_LISTID],
         }),
       });
       return { status: "success", message: "Inscription validée" };

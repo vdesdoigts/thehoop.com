@@ -109,7 +109,8 @@ export default function App() {
             <p className="max-w-xl mt-6 text-lg leading-7 text-gray-600">
               Recevez les dernières informations NBA, les matchs, les
               transferts, les blessures, les performances et bien plus encore.
-              C'est facile, gratuit et livré chaque matin dans votre bôite mail.
+              C&apos;est facile, gratuit et livré chaque matin dans votre bôite
+              mail.
               {/* <span className="underline underline-offset-4">WhatsApp</span>. */}
             </p>
             <div className="mt-10 sm:flex items-center gap-x-6">
@@ -140,7 +141,7 @@ export default function App() {
                       type="submit"
                       className="flex-none rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      S'inscrire
+                      S&apos;inscrire
                     </button>
                   </div>
                 </fieldset>
